@@ -171,7 +171,11 @@
     <None Include="..\doc\Vcpkg.md" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Case.hpp" />
     <ClInclude Include="Classes.hpp" />
+    <ClInclude Include="Objet.hpp" />
+    <ClInclude Include="ObjetDeverouiller.hpp" />
+    <ClInclude Include="ObjetEclairer.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

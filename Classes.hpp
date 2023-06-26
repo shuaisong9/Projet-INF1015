@@ -3,56 +3,14 @@
 #include <memory>
 #include <map>
 #include <iostream>
+#include <algorithm>
 
+#include "Case.hpp"
+#include "Objet.hpp"
+#include "ObjetDeverouiller.hpp"
+#include "ObjetEclairer.hpp"
 using namespace std;
 
-
-/*
-Classe pour contenir une case du jeu
-    * Contient un nom, une description
-    * Contient un map pour les connections possibles entre cette case et les autres cases
-    * Méthode pour afficher les données d'une case (afficher)
-    * Méthode pour ajouter une nouvelle connection à la case (addConnection)
-    * Méthode pour vérifier si une direction donnée fait partie des connections possibles (isValidMove)
-    * Méthode pour retourner la position (case) correspondant à une direction donnée (getNewPosition)
-    * Méthode pour retourner le nom (getNow)
-*/
-class Case {
-public:
-    Case(string nom, string description) : nom_(nom), description_(description) {}
-
-    ostream& afficher(ostream& os) {
-        os << "-- " << nom_ << " --" << endl;
-        os << description_ << endl;
-        for(auto& c: connections_){
-            os << c.second.lock()->getNom() << " est vers  " << c.first << endl; // le nord; l'est
-        }
-        return os;
-    }
-
-    void addConnection(string direction, std::shared_ptr<Case> connection) {
-        connections_[direction] = connection;
-    }
-
-    bool isValidMove(string direction) const {
-        return (connections_.find(direction) != connections_.end());
-    }
-
-    shared_ptr<Case> getNewPosition(string direction) {         
-        return connections_[direction].lock();
-    }
-
-    string getNom(){
-        return nom_;
-    }
-
-private:
-    string nom_;
-    string description_; 
-
-    // À chaque Direction X: doit correspondre un pointeur vers une case de la carte
-    map<string, weak_ptr<Case>> connections_; 
-};
 
 
 /*
@@ -78,10 +36,13 @@ public:
             "Vous êtes dans une petite chambre. Elle n'a rien de spécial autre que d'être petite.");
 		
         shared_ptr<Case> salon = make_shared<Case>("Salon", 
-            "Vous êtes dans le salon.");
+            "Vous êtes dans le salon.", false);
 		
         shared_ptr<Case> couloir = make_shared<Case>("Couloir", 
             "Vous êtes dans le couloir.");    
+
+        shared_ptr<Case> salleR = make_shared<Case>("Salle R",
+            "Vous êtes dans la salle secrète R.");
 
         // Ajouter connections possibles pour chaque case
         entree->addConnection("N", couloir);
@@ -96,6 +57,19 @@ public:
 		chambre->addConnection("E", couloir);
 
 		cuisine->addConnection("S", couloir);
+
+        //////
+        // Definition des objets du jeu
+        shared_ptr<Objet> piano = make_shared<Objet>("Piano", "C'est un vieux piano Yamaha des années 90s.");     // CANNOT INSTANTIATE ABSTRACT CLASS !!!
+        shared_ptr<ObjetEclairer> interrupteurSalon = make_shared<ObjetEclairer>("Interrupteur", "Il semble pouvoir allumer la lumière dans une salle connexe.", salon);
+        shared_ptr<ObjetDeverouiller> boutonRouge = make_shared<ObjetDeverouiller>("Bouton rouge", "Il semble pouvoir déverouiller une salle.", couloir, salleR, "E", "W");
+        
+        // Ajouter les objets présents dans chaque case
+        salon->addObjet(piano);
+        couloir->addObjet(interrupteurSalon);
+        salon->addObjet(boutonRouge);
+
+        //////
 
         // Enregistrer les cases dans le vector carte_
         carte_.push_back(entree);
@@ -155,6 +129,38 @@ public:
     shared_ptr<Case> getCurrentPosition() {
         return position_;
     }
+    
+    /////
+    void look(string objetName) {
+        if (objetName.empty()) {
+            position_->afficher(cout);
+        }
+        else { // Dans la meme fonction look, ou on peut creer une fonction separee pour lookObject???
+            shared_ptr<Objet> obj = position_->getObjet(objetName); 
+            if (obj != nullptr) {
+                obj->afficher(cout);
+            }
+            else {
+                cout << "Objet n'existe pas!" << endl;  // ??
+            }
+        }    
+    }
+
+
+    void use(string objetName) {
+        if (objetName.empty()) {
+            cout << "use ne peut pas être utilisé sans argument. Veuillez préciser un nom d'objet ou un mot-clé." << endl;
+        }
+        
+        shared_ptr<Objet> obj = position_->getObjet(objetName);
+        if (obj != nullptr) {
+            obj->effectuerAction();
+        }
+        else {
+            cout << "Objet n'existe pas!" << endl;  // ??
+        }
+    }
+
 
 private:
     shared_ptr<Case> position_;

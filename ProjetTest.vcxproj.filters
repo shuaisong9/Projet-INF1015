@@ -42,5 +42,17 @@
     <ClInclude Include="Classes.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Objet.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjetDeverouiller.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjetEclairer.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Case.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
