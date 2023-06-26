@@ -1,4 +1,11 @@
-﻿#include <string>
+/*
+Livrable 1. 
+	Ikram Arroud 2210444
+	Shu Ai Song 2025639
+	Abdelnour Sikouky 21582444
+*/
+
+#include <string>
 #include <vector>
 #include <memory>
 #include <map>

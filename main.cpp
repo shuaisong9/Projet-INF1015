@@ -1,4 +1,11 @@
-﻿#pragma region "Bibliothèques"//{
+/*
+Livrable 1. 
+	Ikram Arroud 2210444
+	Shu Ai Song 2025639
+	Abdelnour Sikouky 21582444
+*/
+
+#pragma region "Bibliothèques"//{
 
 #include <iostream>
 #include <iomanip>
