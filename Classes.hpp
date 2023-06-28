@@ -1,4 +1,4 @@
-/*
+﻿/*
 Livrable 1. 
 	Ikram Arroud 2210444
 	Shu Ai Song 2025639
@@ -31,7 +31,7 @@ Classe pour contenir la carte du jeu
 class CarteDuJeu {
 public:
 
-    void initJeu() {
+    void initCarteJeu() {
         // Definition de toutes le cases du jeu
         shared_ptr<Case> entree = make_shared<Case>("Entree", 
             "Vous êtes dans l'entrée. Il y a un tapis sur le sol.");
@@ -52,24 +52,24 @@ public:
             "Vous êtes dans la salle secrète R.");
 
         // Ajouter connections possibles pour chaque case
-        entree->addConnection("N", couloir);
-        entree->addConnection("E", salon);
+        entree->addConnection(N, couloir);
+        entree->addConnection(E, salon);
 
-		salon->addConnection("W", entree);
+		salon->addConnection(W, entree);
 
-		couloir->addConnection("S", entree);
-		couloir->addConnection("N", cuisine);
-		couloir->addConnection("W", chambre);
+		couloir->addConnection(S, entree);
+		couloir->addConnection(N, cuisine);
+		couloir->addConnection(W, chambre);
 
-		chambre->addConnection("E", couloir);
+		chambre->addConnection(E, couloir);
 
-		cuisine->addConnection("S", couloir);
+		cuisine->addConnection(S, couloir);
 
         //////
         // Definition des objets du jeu
         shared_ptr<Objet> piano = make_shared<Objet>("Piano", "C'est un vieux piano Yamaha des années 90s.");     // CANNOT INSTANTIATE ABSTRACT CLASS !!!
         shared_ptr<ObjetEclairer> interrupteurSalon = make_shared<ObjetEclairer>("Interrupteur", "Il semble pouvoir allumer la lumière dans une salle connexe.", salon);
-        shared_ptr<ObjetDeverouiller> boutonRouge = make_shared<ObjetDeverouiller>("Bouton rouge", "Il semble pouvoir déverouiller une salle.", couloir, salleR, "E", "W");
+        shared_ptr<ObjetDeverouiller> boutonRouge = make_shared<ObjetDeverouiller>("Bouton rouge", "Il semble pouvoir déverouiller une salle.", couloir, salleR, E, W);
         
         // Ajouter les objets présents dans chaque case
         salon->addObjet(piano);
@@ -115,7 +115,7 @@ public:
 
     // Constructeur sans parametres d'entree
     EtatDuJeu() {
-        carteJeu_.initJeu();
+        carteJeu_.initCarteJeu();
         position_ = carteJeu_.getDefaultPosition();    // Position par defaut
     }
 
@@ -186,11 +186,101 @@ Classe pour la logique et l'exécution du jeu
 */
 class GamePlay {
 public:
+
+    void initJeu() {
+        // Definition de l'aiguillage des commandes
+        commandActionMap_["look"] = [this](string& arg) {etatJeu_.look(arg); };
+        commandActionMap_["use"] = [this](string& arg) {etatJeu_.use(arg); };
+
+    }
+
+
+
+    //// Function to split a string into words
+    //vector<string> splitString(const string& input) {
+    //    istringstream iss(input);
+    //    vector<string> words;
+    //    std::string word;
+    //    while (iss >> word) {
+    //        words.push_back(word);
+    //    }
+    //    return words;
+    //}
+
+    pair<string, string> splitUserInputStr(string userInput) {
+        string command;
+        string argument;
+        size_t spacePos = userInput.find(' ');
+        if (spacePos != string::npos) {
+            command = userInput.substr(0, spacePos);
+            argument = userInput.substr(spacePos + 1);
+        }
+        else {
+            command = userInput;
+        }
+        return make_pair(command, argument);
+    }
+
+
     void run() {
         bool stop = false;
         cout << "> > > > JEU INF1015 < < < <" << endl;
 
         etatJeu_.getCurrentPosition()->afficher(cout); //the first pos, defaultpos
+
+
+        std::string userInput;
+        std::cout << "Enter your command: ";
+        std::getline(std::cin, userInput);
+
+        // Split the user input into words
+        //std::vector<std::string> words = splitString(userInput);
+
+        // Check the command and perform the corresponding action
+        // if (!words.empty()) {
+            //std::string command = words[0];
+            //if (command == "look") {
+            //    if (words.size() > 1) {
+            //        std::string object = words[1];
+            //        // Perform action for "look" command with the specified object
+            //        std::cout << "Looking at: " << object << std::endl;
+            //    }
+            //    else {
+            //        // Handle "look" command without object
+            //        std::cout << "Look at what?" << std::endl;
+            //    }
+            //}
+            // if (otherCommand)
+            // else { cout << "Command n'existe pas" }
+
+
+
+
+       
+
+
+        // Extract the command and argument from the user input
+        std::string command;
+        std::string argument;
+        size_t spacePos = userInput.find(' ');
+        if (spacePos != std::string::npos) {
+            command = userInput.substr(0, spacePos);
+            argument = userInput.substr(spacePos + 1);
+        }
+        else {
+            command = userInput;
+        }
+
+        //// Perform the action based on the user command
+        //auto it = commandActionMap_.find(command);
+        //if (it != commandActionMap_.end()) {
+        //    it->second(argument);  // Call the member function with the argument
+        //}
+        //else {
+        //    // Handle unrecognized command
+        //    std::cout << "Unrecognized command: " << command << std::endl;
+        //}
+
 
         while (!stop) {
             cout << endl << "> ";
@@ -214,7 +304,9 @@ public:
     }    
 
 private:
-    EtatDuJeu etatJeu_;    
+    EtatDuJeu etatJeu_;  
+    unordered_map<string, function<void(string&)>> commandActionMap_;    // function<void(EtatDuJeu&)>
+    
 };
 
 

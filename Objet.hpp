@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <string>
 #include <vector>
@@ -14,7 +14,9 @@ using namespace std;
 
 class Objet {
 public:
-    Objet(string nom, string description) : nom_(nom), description_(description) {}
+    Objet(string nom, string description) : nom_(nom), description_(description) {
+        genererMotsCles();
+    }
     virtual ~Objet() = default;
     virtual void effectuerAction() {}; 
     ostream& afficher(ostream& os) {
@@ -24,8 +26,17 @@ public:
 
     string getNom() { return nom_; }
 
+    void genererMotsCles() {
+        istringstream iss(nom_);
+        string word;
+        while (iss >> word) {
+            motsCles_.push_back(word);
+        }
+    }
+
 protected:
     string nom_;
     string description_;
+    vector<string> motsCles_;
 };
 

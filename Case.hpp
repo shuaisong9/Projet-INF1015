@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include <string>
 #include <vector>
@@ -12,15 +12,19 @@
 
 using namespace std;
 
+
+enum direction { N = 'N', S = 'S', E = 'E', W = 'W' };
+
+
 /*
 Classe pour contenir une case du jeu
     * Contient un nom, une description
     * Contient un map pour les connections possibles entre cette case et les autres cases
-    * Méthode pour afficher les données d'une case (afficher)
-    * Méthode pour ajouter une nouvelle connection à la case (addConnection)
-    * Méthode pour vérifier si une direction donnée fait partie des connections possibles (isValidMove)
-    * Méthode pour retourner la position (case) correspondant à une direction donnée (getNewPosition)
-    * Méthode pour retourner le nom (getNow)
+    * MÃ©thode pour afficher les donnÃ©es d'une case (afficher)
+    * MÃ©thode pour ajouter une nouvelle connection Ã  la case (addConnection)
+    * MÃ©thode pour vÃ©rifier si une direction donnÃ©e fait partie des connections possibles (isValidMove)
+    * MÃ©thode pour retourner la position (case) correspondant Ã  une direction donnÃ©e (getNewPosition)
+    * MÃ©thode pour retourner le nom (getNow)
 */
 class Case {
 public:
@@ -32,7 +36,7 @@ public:
             os << "-- " << nom_ << " --" << endl;
             os << description_ << endl;
             for (auto& c : connections_) {
-                os << c.second.lock()->getNom() << " est vers  " << c.first << endl; // le nord; l'est
+                os << c.second.lock()->getNom() << " est vers " << char(c.first) << endl; // le nord; l'est
             }
             os << "Vous observez:" << endl;
             for (auto& o : objets_) {
@@ -40,21 +44,39 @@ public:
             }
         }
         else {
-            os << "Il fait très sombre et vous ne discernez aucun détail. Vous voyez seulement l'accès menant aux pièces connexes." << endl;
+            os << "Il fait trÃ¨s sombre et vous ne discernez aucun dÃ©tail. Vous voyez seulement l'accÃ¨s menant aux piÃ¨ces connexes." << endl;
         }
         return os;
     }
 
-    void addConnection(string direction, shared_ptr<Case> connection) {
-        connections_[direction] = connection;
+    direction stringToDirection(string directionStr) {  // ???
+        if (directionStr == "N") {
+            return N;
+        }
+        else if (directionStr == "S") {
+            return S;
+        }
+        else if (directionStr == "E") {
+            return E;
+        }
+        else if (directionStr == "W") {
+            return W;
+        }        
     }
 
-    bool isValidMove(string direction) const {
-        return (connections_.find(direction) != connections_.end());
+
+    void addConnection(direction d, shared_ptr<Case> connection) {
+        connections_[d] = connection;
     }
 
-    shared_ptr<Case> getNewPosition(string direction) {
-        return connections_[direction].lock();
+    bool isValidMove(string directionStr) {
+        direction d = stringToDirection(directionStr);
+        return (connections_.find(d) != connections_.end());
+    }
+
+    shared_ptr<Case> getNewPosition(string directionStr) {
+        direction d = stringToDirection(directionStr);
+        return connections_[d].lock();
     }
 
     string getNom() {
@@ -92,12 +114,12 @@ private:
     string nom_;
     string description_;
 
-    // À chaque Direction X: doit correspondre un pointeur vers une case de la carte
-    map<string, weak_ptr<Case>> connections_;
+    // Ã€ chaque Direction X: doit correspondre un pointeur vers une case de la carte
+    map<direction, weak_ptr<Case>> connections_;
 
-    // Objets présents dans la case ?
+    // Objets prÃ©sents dans la case ?
     vector<shared_ptr<Objet>> objets_; // Vector, map??
 
     // Etat de l'eclairage ?
-    bool isBright_; // Éclairé par défaut
+    bool isBright_; // Ã‰clairÃ© par dÃ©faut
 };

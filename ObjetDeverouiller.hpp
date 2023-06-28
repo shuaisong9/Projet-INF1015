@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <string>
 #include <vector>
@@ -14,7 +14,7 @@ using namespace std;
 
 class ObjetDeverouiller : public Objet {
 public:
-    ObjetDeverouiller(string nom, string description, shared_ptr<Case> c1, shared_ptr<Case> c2, string direction1_2, string direction2_1) :
+    ObjetDeverouiller(string nom, string description, shared_ptr<Case> c1, shared_ptr<Case> c2, direction direction1_2, direction direction2_1) :
         Objet(nom, description), case1_(c1), case2_(c2), direction1_2_(direction1_2), direction2_1_(direction2_1) { }
 
     void effectuerAction() override {   // ??
@@ -25,6 +25,6 @@ public:
 private:
     shared_ptr<Case> case1_;
     shared_ptr<Case> case2_;
-    string direction1_2_;
-    string direction2_1_;
+    direction direction1_2_;
+    direction direction2_1_;
 };
