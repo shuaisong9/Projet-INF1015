@@ -12,6 +12,12 @@
 
 using namespace std;
 
+/*
+Classe pour un objet qui permet de changer l'éclairage d'une case
+Hérite de la classe Objet
+    * Contient la case cible
+    * Méthode effectuerAction() (override) qui change l'état d'éclairage dans la case cible
+*/
 class ObjetEclairer : public Objet {
 public:
     ObjetEclairer(string nom, string description, vector<string> keywords, shared_ptr<Case> c) 

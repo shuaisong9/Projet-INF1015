@@ -12,6 +12,13 @@
 
 using namespace std;
 
+/*
+Classe pour un objet qui permet de déverouiller une case
+Hérite de la classe Objet    
+    * Contient les deux cases à connecter ensemble
+    * Contient la direction des connections respectives
+    * Méthode effectuerAction() (override) qui ajouter la connection dans les deux cases
+*/
 class ObjetDeverouiller : public Objet {
 public:
     ObjetDeverouiller(string nom, string description, vector<string> keywords, 

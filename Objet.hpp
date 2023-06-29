@@ -14,6 +14,9 @@ Classe pour un objet de base
     * Contient un nom, une description, et un vector de mots-clé
     * Méthode virtuel effectuerAction() 
     * Méthode afficher() pour afficher la description de l'objet
+    * Méthode getNom() pour retourner le nom de l'objet
+    * Méthode genererMotsCles() pour générer automatiquement des mots-clé à partir du nom de l'objet
+    * Méthode getMotsCles() pour retourner les mots-clé
 */
 class Objet {
 public:
