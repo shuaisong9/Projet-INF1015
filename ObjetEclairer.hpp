@@ -17,9 +17,10 @@ public:
     ObjetEclairer(string nom, string description, shared_ptr<Case> c) : Objet(nom, description), caseCible_(c) { }
 
     void effectuerAction() override {
-        caseCible_->setEclairage();
+        caseCible_.lock()->setEclairage();
+        cout << "L'éclairage de " << caseCible_.lock()->getNom() << " a été changé" << endl << endl;
     }
 
 private:
-    shared_ptr<Case> caseCible_;
+    weak_ptr<Case> caseCible_;
 };

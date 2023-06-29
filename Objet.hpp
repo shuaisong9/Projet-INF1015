@@ -18,10 +18,12 @@ public:
         genererMotsCles();
     }
     virtual ~Objet() = default;
-    virtual void effectuerAction() {}; 
-    ostream& afficher(ostream& os) {
+    virtual void effectuerAction() { 
+        cout << "Rien de particulier ne se produit." << endl << endl;
+    }; 
+    void afficher() {
         // Afficher description de l'objet ...?
-        os << description_ << endl;
+        cout << description_ << endl << endl;
     }
 
     string getNom() { return nom_; }

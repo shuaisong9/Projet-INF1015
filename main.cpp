@@ -75,3 +75,36 @@ int main(int argc, char* argv[])
 
 	return 0;
 }
+
+
+//// Function to split a string into words
+	//vector<string> splitString(const string& input) {
+	//    istringstream iss(input);
+	//    vector<string> words;
+	//    std::string word;
+	//    while (iss >> word) {
+	//        words.push_back(word);
+	//    }
+	//    return words;
+	//}
+
+
+ // Split the user input into words
+		//std::vector<std::string> words = splitString(userInput);
+
+		// Check the command and perform the corresponding action
+		// if (!words.empty()) {
+			//std::string command = words[0];
+			//if (command == "look") {
+			//    if (words.size() > 1) {
+			//        std::string object = words[1];
+			//        // Perform action for "look" command with the specified object
+			//        std::cout << "Looking at: " << object << std::endl;
+			//    }
+			//    else {
+			//        // Handle "look" command without object
+			//        std::cout << "Look at what?" << std::endl;
+			//    }
+			//}
+			// if (otherCommand)
+			// else { cout << "Command n'existe pas" }

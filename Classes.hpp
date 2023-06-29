@@ -68,7 +68,7 @@ public:
         //////
         // Definition des objets du jeu
         shared_ptr<Objet> piano = make_shared<Objet>("Piano", "C'est un vieux piano Yamaha des années 90s.");     // CANNOT INSTANTIATE ABSTRACT CLASS !!!
-        shared_ptr<ObjetEclairer> interrupteurSalon = make_shared<ObjetEclairer>("Interrupteur", "Il semble pouvoir allumer la lumière dans une salle connexe.", salon);
+        shared_ptr<ObjetEclairer> interrupteurSalon = make_shared<ObjetEclairer>("Interrupteur", "Il semble pouvoir contrôler l'éclairage dans une salle connexe.", salon);
         shared_ptr<ObjetDeverouiller> boutonRouge = make_shared<ObjetDeverouiller>("Bouton rouge", "Il semble pouvoir déverouiller une salle.", couloir, salleR, E, W);
         
         // Ajouter les objets présents dans chaque case
@@ -110,27 +110,20 @@ Classe pour l'état du jeu (données actuelles et méthodes de mise à jour)
 */
 class EtatDuJeu {
 public:
-    /*EtatDuJeu(shared_ptr<Case> position, vector<string> movements) : position_(position),
-        movements_(movements) {}*/
-
-    // Constructeur sans parametres d'entree
     EtatDuJeu() {
         carteJeu_.initCarteJeu();
         position_ = carteJeu_.getDefaultPosition();    // Position par defaut
     }
-
     
-    bool move(string direction) { //shared_ptr<Case> newPosition
+    void move(direction direction) { 
         if (position_->isValidMove(direction)) {            
             position_ = position_->getNewPosition(direction);     
-            cout << "Déplacement vers " + direction << endl;
-            return true;
+            cout << "Déplacement vers " << char(direction) << endl << endl;            
+            position_->afficher();
         }
         else {
-            cout << "Ne peut pas aller là!" << endl;  
-            return false;
+            cout << "Ne peut pas aller là!" << endl << endl;
         }
-        //movements_.push_back(newPosition); //do we need to store all positions in a vector? 
     }
 
     shared_ptr<Case> getCurrentPosition() {
@@ -140,15 +133,15 @@ public:
     /////
     void look(string objetName) {
         if (objetName.empty()) {
-            position_->afficher(cout);
+            position_->afficher();
         }
         else { // Dans la meme fonction look, ou on peut creer une fonction separee pour lookObject???
             shared_ptr<Objet> obj = position_->getObjet(objetName); 
             if (obj != nullptr) {
-                obj->afficher(cout);
+                obj->afficher();
             }
             else {
-                cout << "Objet n'existe pas!" << endl;  // ??
+                cout << "Objet n'existe pas!" << endl << endl; 
             }
         }    
     }
@@ -156,23 +149,23 @@ public:
 
     void use(string objetName) {
         if (objetName.empty()) {
-            cout << "use ne peut pas être utilisé sans argument. Veuillez préciser un nom d'objet ou un mot-clé." << endl;
-        }
-        
-        shared_ptr<Objet> obj = position_->getObjet(objetName);
-        if (obj != nullptr) {
-            obj->effectuerAction();
+            cout << "use ne peut pas être utilisé sans argument. Veuillez préciser un nom d'objet ou un mot-clé." << endl << endl;
         }
         else {
-            cout << "Objet n'existe pas!" << endl;  // ??
-        }
+            shared_ptr<Objet> obj = position_->getObjet(objetName);
+            if (obj != nullptr) {
+                obj->effectuerAction();
+            }
+            else {
+                cout << "Objet n'existe pas!" << endl << endl; 
+            }        
+        }        
     }
 
 
 private:
     shared_ptr<Case> position_;
     CarteDuJeu carteJeu_;  
-    //vector<string> movements_;
 };
 
 
@@ -187,25 +180,24 @@ Classe pour la logique et l'exécution du jeu
 class GamePlay {
 public:
 
-    void initJeu() {
-        // Definition de l'aiguillage des commandes
-        commandActionMap_["look"] = [this](string& arg) {etatJeu_.look(arg); };
-        commandActionMap_["use"] = [this](string& arg) {etatJeu_.use(arg); };
-
+    GamePlay() {
+        initJeu();
     }
 
+    void initJeu() {
+        // Definition de l'aiguillage des commandes
+        commandActionMap_["look"] = [this](string arg) {etatJeu_.look(arg); };
+        commandActionMap_["use"] = [this](string arg) {etatJeu_.use(arg); };
 
+        commandActionMap_["N"] = [this](string arg) {etatJeu_.move(N); };
+        commandActionMap_["S"] = [this](string arg) {etatJeu_.move(S); };
+        commandActionMap_["E"] = [this](string arg) {etatJeu_.move(E); };
+        commandActionMap_["W"] = [this](string arg) {etatJeu_.move(W); };
 
-    //// Function to split a string into words
-    //vector<string> splitString(const string& input) {
-    //    istringstream iss(input);
-    //    vector<string> words;
-    //    std::string word;
-    //    while (iss >> word) {
-    //        words.push_back(word);
-    //    }
-    //    return words;
-    //}
+        commandActionMap_["exit"] = [this](string arg) { stop_ = true;
+        cout << "Jeu terminé!" << endl; };
+    }
+
 
     pair<string, string> splitUserInputStr(string userInput) {
         string command;
@@ -223,90 +215,34 @@ public:
 
 
     void run() {
-        bool stop = false;
-        cout << "> > > > JEU INF1015 < < < <" << endl;
+        cout << "> > > > JEU INF1015 < < < <" << endl << endl;
+        etatJeu_.getCurrentPosition()->afficher(); // La premiere position, celle par defaut
 
-        etatJeu_.getCurrentPosition()->afficher(cout); //the first pos, defaultpos
-
-
-        std::string userInput;
-        std::cout << "Enter your command: ";
-        std::getline(std::cin, userInput);
-
-        // Split the user input into words
-        //std::vector<std::string> words = splitString(userInput);
-
-        // Check the command and perform the corresponding action
-        // if (!words.empty()) {
-            //std::string command = words[0];
-            //if (command == "look") {
-            //    if (words.size() > 1) {
-            //        std::string object = words[1];
-            //        // Perform action for "look" command with the specified object
-            //        std::cout << "Looking at: " << object << std::endl;
-            //    }
-            //    else {
-            //        // Handle "look" command without object
-            //        std::cout << "Look at what?" << std::endl;
-            //    }
-            //}
-            // if (otherCommand)
-            // else { cout << "Command n'existe pas" }
-
-
-
-
-       
-
-
-        // Extract the command and argument from the user input
-        std::string command;
-        std::string argument;
-        size_t spacePos = userInput.find(' ');
-        if (spacePos != std::string::npos) {
-            command = userInput.substr(0, spacePos);
-            argument = userInput.substr(spacePos + 1);
-        }
-        else {
-            command = userInput;
-        }
-
-        //// Perform the action based on the user command
-        //auto it = commandActionMap_.find(command);
-        //if (it != commandActionMap_.end()) {
-        //    it->second(argument);  // Call the member function with the argument
-        //}
-        //else {
-        //    // Handle unrecognized command
-        //    std::cout << "Unrecognized command: " << command << std::endl;
-        //}
-
-
-        while (!stop) {
-            cout << endl << "> ";
+        while (!stop_) {
             string userInput;
-            cin >> userInput;
+            cout << "> ";
+            getline(std::cin, userInput);
+
+            // Extract the command and argument from the user input
+            pair<string, string> splitInput = splitUserInputStr(userInput);
             
-            if (userInput == "exit") {
-                stop = true;
-            }
-            else if (userInput == "look"){
-				etatJeu_.getCurrentPosition()->afficher(cout); 
-            }
-            else if (userInput == "N" || "S" || "W" || "E") {
-                if(etatJeu_.move(userInput))    // Si déplacement réussi
-                    etatJeu_.getCurrentPosition()->afficher(cout);
+
+            // Perform the action based on the user command
+            auto it = commandActionMap_.find(splitInput.first);
+            if (it != commandActionMap_.end()) {
+                it->second(splitInput.second);  // Call the member function with the argument
             }
             else {
-                cout << "Je ne sais pas ça." << endl;
+                // Handle unrecognized command
+                cout << "Commande inconnue: " << splitInput.first << endl << endl;
             }
         }   
     }    
 
 private:
     EtatDuJeu etatJeu_;  
-    unordered_map<string, function<void(string&)>> commandActionMap_;    // function<void(EtatDuJeu&)>
-    
+    unordered_map<string, function<void(string)>> commandActionMap_;
+    bool stop_ = false; // Par defaut, jeu n'arrete pas
 };
 
 
