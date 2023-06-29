@@ -14,7 +14,7 @@ Les commandes suivantes peuvent être utilisées pendant le jeu :
 
 - `look` : Affiche la description de la zone actuelle ou examine un objet dans la zone.
 - `use` : Utilise un objet dans la zone actuelle.
-- `direction` : Se déplace vers la zone connectée dans la direction spécifiée (par exemple, "N").
+- `direction ("N", "S", "E", "O")` : Se déplace vers la zone connectée dans la direction spécifiée.
 
 ## Crédits
 
