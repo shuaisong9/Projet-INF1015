@@ -65,7 +65,7 @@ public:
         shared_ptr<ObjetEclairer> interrupteurSalon = make_shared<ObjetEclairer>("A light switch", "It appears to be able to control the lighting in a connected room.", 
             vector<string>{"light", "switch"}, salon);
         shared_ptr<ObjetDeverouiller> boutonRouge = make_shared<ObjetDeverouiller>("A red button", "It appears to be able to unlock a secret room.", 
-            vector<string>{"button", "red"}, couloir, salleR, E, O);
+            vector<string>{"button", "red"}, couloir, salleR, E, W);
         
         // Ajouter les objets présents dans chaque case
         salon->addObjet(piano);

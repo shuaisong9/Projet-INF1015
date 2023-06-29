@@ -12,7 +12,7 @@
 using namespace std;
 
 
-enum direction { N = 'N', S = 'S', E = 'E', W = 'w' };
+enum direction { N = 'N', S = 'S', E = 'E', W = 'W' };
 
 
 /*
