@@ -13,7 +13,7 @@ using namespace std;
 
 
 enum direction { N = 'N', S = 'S', E = 'E', W = 'W' };
-map<char, string>directions = { {N, "North"}, {S, "South"}, {E,"East"}, {W,"West"} };
+map<direction, string>directions = { {N, "North"}, {S, "South"}, {E,"East"}, {W,"West"} };
 
 
 /*
