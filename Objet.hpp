@@ -10,9 +10,9 @@
 using namespace std;
 
 /*
-Classe pour un objet de base 
+Classe pour un objet de base
     * Contient un nom, une description, et un vector de mots-clé
-    * Méthode virtuel effectuerAction() 
+    * Méthode virtuel effectuerAction()
     * Méthode afficher() pour afficher la description de l'objet
     * Méthode getNom() pour retourner le nom de l'objet
     * Méthode genererMotsCles() pour générer automatiquement des mots-clé à partir du nom de l'objet
@@ -20,16 +20,16 @@ Classe pour un objet de base
 */
 class Objet {
 public:
-    Objet(string nom, string description, vector<string> keywords) : 
-        nom_(nom), description_(description), motsCles_(keywords) {
+    Objet(string nom, string description, vector<string> keywords, string descriptionAction = "Nothing special happens.") :
+        nom_(nom), description_(description), motsCles_(keywords), descriptionAction_(descriptionAction) {
         //genererMotsCles();
     }
 
     virtual ~Objet() = default;
 
-    virtual void effectuerAction() { 
-        cout << "Nothing special happens." << endl << endl;
-    }; 
+    virtual void effectuerAction() {
+        cout << descriptionAction_ << endl << endl;
+    };
 
     void afficher() {
         cout << description_ << endl << endl;
@@ -39,7 +39,7 @@ public:
 
     // On n'est pas certains s'il faut générer les mots clés avec une fonction ou s'il faut les définir à la main
     // Nous avons implémenté les deux choix
-    void genererMotsCles() { 
+    void genererMotsCles() {
         motsCles_.clear();
         string lowerNom = nom_;
         transform(lowerNom.begin(), lowerNom.end(), lowerNom.begin(),
@@ -60,5 +60,6 @@ protected:
     string nom_;
     string description_;
     vector<string> motsCles_;
+    string descriptionAction_;
 };
 

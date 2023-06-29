@@ -20,12 +20,14 @@ Hérite de la classe Objet
 */
 class ObjetEclairer : public Objet {
 public:
-    ObjetEclairer(string nom, string description, vector<string> keywords, shared_ptr<Case> c) 
+    ObjetEclairer(string nom, string description, vector<string> keywords, shared_ptr<Case> c)
         : Objet(nom, description, keywords), caseCible_(c) { }
 
     void effectuerAction() override {
         caseCible_.lock()->setEclairage();
-        cout << "The lighting in the " << caseCible_.lock()->getNom() << " has been changed." << endl << endl;
+        descriptionAction_ = "The lighting in the " + caseCible_.lock()->getNom() + " has been changed.";
+        cout << descriptionAction_ << endl << endl;
+        //cout << "The lighting in the " << caseCible_.lock()->getNom() << " has been changed." << endl << endl;
     }
 
 private:
