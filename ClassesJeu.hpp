@@ -31,7 +31,7 @@ public:
             "This is the entrance of the house. There is a sturdy carpet on the floor.");
 		
         shared_ptr<Case> cuisine = make_shared<Case>("Kitchen", 
-            "Vous êtes dans la cuisine. Elle est très jaune 'beurre' comme la mode d'une certaine époque.");
+            "This is the kitchen. It is 'butter' yellow and old fashioned.");
 		
         shared_ptr<Case> chambre = make_shared<Case>("Small Bedroom", 
             "This is the small bedroom. it is not particularly clean or well organised. There is a small window.");
