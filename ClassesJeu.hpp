@@ -61,7 +61,7 @@ public:
 
         // Definition des objets du jeu
         shared_ptr<Objet> piano = make_shared<Objet>("A cheap electric piano", "This is an old entry-level with 61 keys. It looks like any cheap stuff from the late 90s.", 
-            vector<string>{"piano"});
+            vector<string>{"piano"}, "You play some chords on the piano. It does not sound very good.");
         shared_ptr<ObjetEclairer> interrupteurSalon = make_shared<ObjetEclairer>("A light switch", "It appears to be able to control the lighting in a connected room.", 
             vector<string>{"light", "switch"}, salon);
         shared_ptr<ObjetDeverouiller> boutonRouge = make_shared<ObjetDeverouiller>("A red button", "It appears to be able to unlock a secret room.", 
