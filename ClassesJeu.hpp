@@ -27,23 +27,23 @@ public:
 
     void initCarteJeu() {
         // Definition de toutes le cases du jeu
-        shared_ptr<Case> entree = make_shared<Case>("Entree", 
-            "Vous êtes dans l'entrée. Il y a un tapis sur le sol.");
+        shared_ptr<Case> entree = make_shared<Case>("Foyer", 
+            "This is the entrance of the house. There is a sturdy carpet on the floor.");
 		
-        shared_ptr<Case> cuisine = make_shared<Case>("Cuisine", 
+        shared_ptr<Case> cuisine = make_shared<Case>("Kitchen", 
             "Vous êtes dans la cuisine. Elle est très jaune 'beurre' comme la mode d'une certaine époque.");
 		
-        shared_ptr<Case> chambre = make_shared<Case>("Chambre", 
-            "Vous êtes dans une petite chambre. Elle n'a rien de spécial autre que d'être petite.");
+        shared_ptr<Case> chambre = make_shared<Case>("Small Bedroom", 
+            "This is the small bedroom. it is not particularly clean or well organised. There is a small window.");
 		
-        shared_ptr<Case> salon = make_shared<Case>("Salon", 
-            "Vous êtes dans le salon.", false);
+        shared_ptr<Case> salon = make_shared<Case>("Living Room", 
+            "This is the living room. There is a computer desk with cameras and a bluescreen. Next to it is a TV and a couch.", false);
 		
-        shared_ptr<Case> couloir = make_shared<Case>("Couloir", 
-            "Vous êtes dans le couloir.");    
+        shared_ptr<Case> couloir = make_shared<Case>("Main Hallway", 
+            "This is the main hallway. There is a bunch of boxes against the wall.");    
 
-        shared_ptr<Case> salleR = make_shared<Case>("Salle R",
-            "Vous êtes dans la salle secrète R.");
+        shared_ptr<Case> salleR = make_shared<Case>("Room R",
+            "This is a strange room with red walls.");
 
         // Ajouter connections possibles pour chaque case
         entree->addConnection(N, couloir);
@@ -60,12 +60,12 @@ public:
 		cuisine->addConnection(S, couloir);
 
         // Definition des objets du jeu
-        shared_ptr<Objet> piano = make_shared<Objet>("Piano", "C'est un vieux piano Yamaha des années 90s.", 
+        shared_ptr<Objet> piano = make_shared<Objet>("A cheap electric piano", "This is an old entry-level with 61 keys. It looks like any cheap stuff from the late 90s.", 
             vector<string>{"piano"});
-        shared_ptr<ObjetEclairer> interrupteurSalon = make_shared<ObjetEclairer>("Interrupteur", "Il semble pouvoir contrôler l'éclairage dans une salle connexe.", 
-            vector<string>{"interrupteur"}, salon);
-        shared_ptr<ObjetDeverouiller> boutonRouge = make_shared<ObjetDeverouiller>("Bouton rouge", "Il semble pouvoir déverouiller une salle.", 
-            vector<string>{"bouton", "rouge"}, couloir, salleR, E, O);
+        shared_ptr<ObjetEclairer> interrupteurSalon = make_shared<ObjetEclairer>("A light switch", "It appears to be able to control the lighting in a connected room.", 
+            vector<string>{"light", "switch"}, salon);
+        shared_ptr<ObjetDeverouiller> boutonRouge = make_shared<ObjetDeverouiller>("A red button", "It appears to be able to unlock a secret room.", 
+            vector<string>{"button", "red"}, couloir, salleR, E, O);
         
         // Ajouter les objets présents dans chaque case
         salon->addObjet(piano);
