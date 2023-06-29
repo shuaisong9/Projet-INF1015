@@ -6,9 +6,6 @@
 #include <map>
 #include <iostream>
 #include <algorithm>
-//#include <unicode/uchar.h> 
-//#include <unicode/unistr.h>
-
 
 #include "Objet.hpp"
 
