@@ -119,7 +119,7 @@ public:
     void move(direction direction) { 
         if (position_->isValidMove(direction)) {            
             position_ = position_->getNewPosition(direction);     
-            cout << "Going " << char(direction) << endl << endl;            
+            cout << "Going to " << char(direction) << endl << endl;            
             position_->afficher();
         }
         else {
@@ -137,7 +137,7 @@ public:
                 obj->afficher();
             }
             else {
-                cout << "Objet n'existe pas!" << endl << endl; 
+                cout <<  "Object does not exist!" << endl << endl; 
             }
         }    
     }
