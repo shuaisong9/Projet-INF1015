@@ -17,6 +17,8 @@ Classe pour un objet de base
     * Méthode getNom() pour retourner le nom de l'objet
     * Méthode genererMotsCles() pour générer automatiquement des mots-clé à partir du nom de l'objet
     * Méthode getMotsCles() pour retourner les mots-clé
+Classe pour un objet regulier
+   *Un objet regulier est un objet qui effectue une commande sans rien changer dans le reste du jeu (par exemple: piano)
 */
 class Objet {
 public:
