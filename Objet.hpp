@@ -22,18 +22,25 @@ public:
         cout << "Rien de particulier ne se produit." << endl << endl;
     }; 
     void afficher() {
-        // Afficher description de l'objet ...?
         cout << description_ << endl << endl;
     }
 
     string getNom() { return nom_; }
 
     void genererMotsCles() {
-        istringstream iss(nom_);
-        string word;
-        while (iss >> word) {
-            motsCles_.push_back(word);
+        string lowerNom = nom_;
+        transform(lowerNom.begin(), lowerNom.end(), lowerNom.begin(),
+            [](unsigned char c) { return static_cast<char>(tolower(c)); });
+
+        istringstream iss(lowerNom);
+        string mot;
+        while (iss >> mot) {
+            motsCles_.push_back(mot);
         }
+    }
+
+    vector<string> getMotsCles() {
+        return motsCles_;
     }
 
 protected:

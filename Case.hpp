@@ -68,6 +68,9 @@ public:
     //    }
     //}
 
+    string getNom() {
+        return nom_;
+    }
 
     void addConnection(direction d, shared_ptr<Case> connection) {
         connections_[d] = connection;
@@ -83,36 +86,33 @@ public:
         return connections_[d].lock();
     }
 
-    string getNom() {
-        return nom_;
-    }
-
-
-    ///////
     void addObjet(shared_ptr<Objet> objet) {
-        // On pourrait creer les objets a l'exterieur de la case (dans Carte)
-        // On pourrait aussi les creer a l'appelation de addObjet()...comment????   // string nom, string description, shared_ptr<Objet> objet
         objets_.push_back(objet);
     }
 
-    bool containsKeyword(const string& input) {
+    bool containsKeyword(const string& input, shared_ptr<Objet> obj) {
+        // Rendre le string lowercase pour rendre la recherche case-insensitive  
         string lowerInput = input;
-        transform(lowerInput.begin(), lowerInput.end(), lowerInput.begin(), [](unsigned char c) { return static_cast<char>(tolower(c)); });
+        transform(lowerInput.begin(), lowerInput.end(), lowerInput.begin(), 
+            [](unsigned char c) { return static_cast<char>(tolower(c)); });
 
-        // Check if the input contains the keyword "leather" or "jacket"
-        return (lowerInput.find("leather") != std::string::npos || lowerInput.find("jacket") != std::string::npos);
+        // Verifier si le string d'entree contient les mots-cles d'un objet
+        for (auto& str : obj->getMotsCles()) {
+            if (lowerInput.find(str) != string::npos) {
+                return true;
+            }
+        }
+        return false;
     }
 
+    shared_ptr<Objet> getObjet(string objetNom) {
+        auto it = find_if(objets_.begin(), objets_.end(),
+            [&](shared_ptr<Objet> obj) { return containsKeyword(objetNom, obj); });
 
-    shared_ptr<Objet> getObjet(string objetName) {
-        auto it = find_if(objets_.begin(), objets_.end(), [&](shared_ptr<Objet> obj) { return obj->getNom() == objetName; });
-            // Cela ne respecte pas toutes les possibilites de inputs de l'utilisateur
-            // Creer une correspondance entre tous les inputs possibles pour un objet (en se basant sur sa description) et son nom ...
-        
+        //auto it = find_if(objets_.begin(), objets_.end(), [&](shared_ptr<Objet> obj) { return obj->getNom() == objetNom; });        
         return (it != objets_.end()) ? *it : nullptr;
     }
-
-    // Set eclairage 
+ 
     void setEclairage() {
         if (isBright_) {
             isBright_ = false;
@@ -122,7 +122,6 @@ public:
         }
     }
 
-
 private:
     string nom_;
     string description_;
@@ -131,7 +130,7 @@ private:
     map<direction, weak_ptr<Case>> connections_;
 
     // Objets présents dans la case 
-    vector<shared_ptr<Objet>> objets_; // Vector, map??
+    vector<shared_ptr<Objet>> objets_; 
 
     // Etat de l'eclairage 
     bool isBright_; // Éclairé par défaut

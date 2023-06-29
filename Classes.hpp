@@ -65,7 +65,6 @@ public:
 
 		cuisine->addConnection(S, couloir);
 
-        //////
         // Definition des objets du jeu
         shared_ptr<Objet> piano = make_shared<Objet>("Piano", "C'est un vieux piano Yamaha des années 90s.");     // CANNOT INSTANTIATE ABSTRACT CLASS !!!
         shared_ptr<ObjetEclairer> interrupteurSalon = make_shared<ObjetEclairer>("Interrupteur", "Il semble pouvoir contrôler l'éclairage dans une salle connexe.", salon);
@@ -76,7 +75,6 @@ public:
         couloir->addObjet(interrupteurSalon);
         salon->addObjet(boutonRouge);
 
-        //////
 
         // Enregistrer les cases dans le vector carte_
         carte_.push_back(entree);
@@ -84,6 +82,7 @@ public:
         carte_.push_back(chambre);
         carte_.push_back(salon);
         carte_.push_back(couloir);
+        carte_.push_back(salleR);
 
         // Set position de depart (defaut)
         defaultPosition_ = entree;  
@@ -115,6 +114,10 @@ public:
         position_ = carteJeu_.getDefaultPosition();    // Position par defaut
     }
     
+    shared_ptr<Case> getCurrentPosition() {
+        return position_;
+    }
+
     void move(direction direction) { 
         if (position_->isValidMove(direction)) {            
             position_ = position_->getNewPosition(direction);     
@@ -124,19 +127,14 @@ public:
         else {
             cout << "Ne peut pas aller là!" << endl << endl;
         }
-    }
-
-    shared_ptr<Case> getCurrentPosition() {
-        return position_;
-    }
+    }    
     
-    /////
-    void look(string objetName) {
-        if (objetName.empty()) {
+    void look(string objetNom) {
+        if (objetNom.empty()) {
             position_->afficher();
         }
-        else { // Dans la meme fonction look, ou on peut creer une fonction separee pour lookObject???
-            shared_ptr<Objet> obj = position_->getObjet(objetName); 
+        else { 
+            shared_ptr<Objet> obj = position_->getObjet(objetNom); 
             if (obj != nullptr) {
                 obj->afficher();
             }
@@ -146,13 +144,12 @@ public:
         }    
     }
 
-
-    void use(string objetName) {
-        if (objetName.empty()) {
+    void use(string objetNom) {
+        if (objetNom.empty()) {
             cout << "use ne peut pas être utilisé sans argument. Veuillez préciser un nom d'objet ou un mot-clé." << endl << endl;
         }
         else {
-            shared_ptr<Objet> obj = position_->getObjet(objetName);
+            shared_ptr<Objet> obj = position_->getObjet(objetNom);
             if (obj != nullptr) {
                 obj->effectuerAction();
             }
@@ -161,7 +158,6 @@ public:
             }        
         }        
     }
-
 
 private:
     shared_ptr<Case> position_;
@@ -216,24 +212,23 @@ public:
 
     void run() {
         cout << "> > > > JEU INF1015 < < < <" << endl << endl;
-        etatJeu_.getCurrentPosition()->afficher(); // La premiere position, celle par defaut
+        etatJeu_.look(""); // Description de la position par defaut
 
         while (!stop_) {
             string userInput;
             cout << "> ";
             getline(std::cin, userInput);
 
-            // Extract the command and argument from the user input
+            // Extraire la commande et l'argument de l'entree de l'utilisateur
             pair<string, string> splitInput = splitUserInputStr(userInput);
             
-
-            // Perform the action based on the user command
+            // Effectuer un action correspondant à la commande
             auto it = commandActionMap_.find(splitInput.first);
             if (it != commandActionMap_.end()) {
-                it->second(splitInput.second);  // Call the member function with the argument
+                it->second(splitInput.second);  // Appel de la fonction d'action, avec l'argument
             }
             else {
-                // Handle unrecognized command
+                // Gestion de commande non reconnue
                 cout << "Commande inconnue: " << splitInput.first << endl << endl;
             }
         }   
