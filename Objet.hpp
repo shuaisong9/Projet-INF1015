@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include <string>
 #include <vector>
@@ -20,7 +20,7 @@ Classe pour un objet de base
 */
 class Objet {
 public:
-    Objet(string nom, string description, vector<string> keywords) : 
+    Objet(string nom, string description, vector<string> keywords) :
         nom_(nom), description_(description), motsCles_(keywords) {
         //genererMotsCles();
     }
@@ -57,8 +57,23 @@ public:
     }
 
 protected:
+    string command_;
     string nom_;
     string description_;
     vector<string> motsCles_;
 };
 
+class ObjetRegulier : public Objet {
+public:
+
+    ObjetRegulier(string nom, string description, vector<string> keywords, string command) :
+        Objet(nom, description, keywords), command_(command) { }
+
+
+    void effectuerAction() override {
+        cout << command_ << endl;
+    }
+
+private:
+    string command_;
+};
