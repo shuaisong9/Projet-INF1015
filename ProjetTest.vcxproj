@@ -169,6 +169,7 @@
   <ItemGroup>
     <None Include="..\doc\Classroom.md" />
     <None Include="..\doc\Vcpkg.md" />
+    <None Include="Readme.md" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Case.hpp" />

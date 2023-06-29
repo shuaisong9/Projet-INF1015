@@ -37,6 +37,9 @@
     <None Include="..\doc\Classroom.md">
       <Filter>Documentation</Filter>
     </None>
+    <None Include="Readme.md">
+      <Filter>Documentation</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ClassesJeu.hpp">
