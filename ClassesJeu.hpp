@@ -119,11 +119,11 @@ public:
     void move(direction direction) { 
         if (position_->isValidMove(direction)) {            
             position_ = position_->getNewPosition(direction);     
-            cout << "Déplacement vers " << char(direction) << endl << endl;            
+            cout << "Going " << char(direction) << endl << endl;            
             position_->afficher();
         }
         else {
-            cout << "Ne peut pas aller là!" << endl << endl;
+            cout << "Can't go there!" << endl << endl;
         }
     }    
     
@@ -144,7 +144,7 @@ public:
 
     void use(string objetNom) {
         if (objetNom.empty()) {
-            cout << "use ne peut pas être utilisé sans argument. Veuillez préciser un nom d'objet ou un mot-clé." << endl << endl;
+            cout << "use cannot be used without an argument. Please specify an object name or keyword." << endl << endl;
         }
         else {
             shared_ptr<Objet> obj = position_->getObjet(objetNom);
@@ -152,7 +152,7 @@ public:
                 obj->effectuerAction();
             }
             else {
-                cout << "Objet n'existe pas!" << endl << endl; 
+                cout << "Object does not exist!" << endl << endl; 
             }        
         }        
     }
@@ -192,7 +192,7 @@ public:
         commandActionMap_["O"] = [this](string arg) {etatJeu_.move(O); };
 
         commandActionMap_["exit"] = [this](string arg) { stop_ = true;
-        cout << "Jeu terminé!" << endl; };
+        cout << "Game Over!" << endl; };
     }
 
     pair<string, string> splitUserInputStr(string userInput) {
@@ -228,7 +228,7 @@ public:
             }
             else {
                 // Gestion de commande non reconnue
-                cout << "Commande inconnue: " << splitInput.first << endl << endl;
+                cout << "Unknown Command: " << splitInput.first << endl << endl;
             }
         }   
     }    
