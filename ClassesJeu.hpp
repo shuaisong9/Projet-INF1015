@@ -49,11 +49,11 @@ public:
         entree->addConnection(N, couloir);
         entree->addConnection(E, salon);
 
-		salon->addConnection(O, entree);
+		salon->addConnection(W, entree);
 
 		couloir->addConnection(S, entree);
 		couloir->addConnection(N, cuisine);
-		couloir->addConnection(O, chambre);
+		couloir->addConnection(W, chambre);
 
 		chambre->addConnection(E, couloir);
 
@@ -65,7 +65,7 @@ public:
         shared_ptr<ObjetEclairer> interrupteurSalon = make_shared<ObjetEclairer>("Interrupteur", "Il semble pouvoir contrôler l'éclairage dans une salle connexe.", 
             vector<string>{"interrupteur"}, salon);
         shared_ptr<ObjetDeverouiller> boutonRouge = make_shared<ObjetDeverouiller>("Bouton rouge", "Il semble pouvoir déverouiller une salle.", 
-            vector<string>{"bouton", "rouge"}, couloir, salleR, E, O);
+            vector<string>{"bouton", "rouge"}, couloir, salleR, E, W);
         
         // Ajouter les objets présents dans chaque case
         salon->addObjet(piano);
@@ -189,7 +189,7 @@ public:
         commandActionMap_["N"] = [this](string arg) {etatJeu_.move(N); };
         commandActionMap_["S"] = [this](string arg) {etatJeu_.move(S); };
         commandActionMap_["E"] = [this](string arg) {etatJeu_.move(E); };
-        commandActionMap_["O"] = [this](string arg) {etatJeu_.move(O); };
+        commandActionMap_["W"] = [this](string arg) {etatJeu_.move(W); };
 
         commandActionMap_["exit"] = [this](string arg) { stop_ = true;
         cout << "Jeu terminé!" << endl; };
