@@ -119,7 +119,7 @@ public:
     void move(direction direction) { 
         if (position_->isValidMove(direction)) {            
             position_ = position_->getNewPosition(direction);     
-            cout << "Going " << directions[char(direction)] << endl << endl;            
+            cout << "Going " << directions[direction] << endl << endl;            
             position_->afficher();
         }
         else {
