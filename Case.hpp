@@ -40,17 +40,17 @@ public:
         if (isBright_) {
             cout << description_ << endl;
             if (!objets_.empty()) {
-                cout << "Vous observez:" << endl;
+                cout << "You notice: " << endl;
                 for (auto& o : objets_) {
                     cout << "\t" << o->getNom() << endl;
                 }
             }            
         }
         else {
-            cout << "Il fait très sombre et vous ne discernez aucun détail. Vous voyez seulement l'accès menant aux pièces connexes." << endl;
+            cout << "It is near pitch black and you cannot discern any details. You can only see the access to adjacent areas." << endl;
         }
         for (auto& c : connections_) {
-            cout << c.second.lock()->getNom() << " est vers " << char(c.first) << endl; 
+            cout << c.second.lock()->getNom() << " is towards " << char(c.first) << endl; 
         }
     }
 

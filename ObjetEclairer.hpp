@@ -25,7 +25,7 @@ public:
 
     void effectuerAction() override {
         caseCible_.lock()->setEclairage();
-        cout << "L'éclairage de " << caseCible_.lock()->getNom() << " a été changé" << endl << endl;
+        cout << "The lighting in the " << caseCible_.lock()->getNom() << " has been changed." << endl << endl;
     }
 
 private:

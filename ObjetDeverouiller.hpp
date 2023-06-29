@@ -28,7 +28,7 @@ public:
     void effectuerAction() override {   
         case1_.lock()->addConnection(direction1_2_, case2_.lock());
         case2_.lock()->addConnection(direction2_1_, case1_.lock());
-        cout << case2_.lock()->getNom() << " est maintenant connecté à " << case1_.lock()->getNom() << endl << endl;
+        cout << case2_.lock()->getNom() << " is now connected to " << case1_.lock()->getNom() << endl << endl;
     }
 
 private:

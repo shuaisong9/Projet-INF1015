@@ -28,7 +28,7 @@ public:
     virtual ~Objet() = default;
 
     virtual void effectuerAction() { 
-        cout << "Rien de particulier ne se produit." << endl << endl;
+        cout << "Nothing special happens." << endl << endl;
     }; 
 
     void afficher() {
