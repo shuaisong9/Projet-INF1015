@@ -172,7 +172,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Case.hpp" />
-    <ClInclude Include="Classes.hpp" />
+    <ClInclude Include="ClassesJeu.hpp" />
     <ClInclude Include="Objet.hpp" />
     <ClInclude Include="ObjetDeverouiller.hpp" />
     <ClInclude Include="ObjetEclairer.hpp" />

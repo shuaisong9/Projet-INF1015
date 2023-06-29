@@ -24,9 +24,10 @@ using namespace std;
 Classe pour contenir la carte du jeu 
     * Contient un vector de toutes les cases du jeu.
     * Contient la position (case) par défaut.
-    * Méthode initJeu() pour définir toutes les cases du jeu (ainsi que les connections entre elles), et la case par défaut.
+    * Méthode initCarteJeu() pour définir toutes les cases du jeu 
+      (incluant les objets qu'elles contiennent, et les connections entre elles), et la case par défaut.
         → Les données sont 'hard coded' dans notre cas, mais elles pourraient être importées d'un fichier.
-    * Méthode pour retourner la position par défaut (getDefaultPosition)
+    * Méthode getDefaultPosition() pour retourner la position par défaut
 */
 class CarteDuJeu {
 public:
@@ -55,26 +56,28 @@ public:
         entree->addConnection(N, couloir);
         entree->addConnection(E, salon);
 
-		salon->addConnection(W, entree);
+		salon->addConnection(O, entree);
 
 		couloir->addConnection(S, entree);
 		couloir->addConnection(N, cuisine);
-		couloir->addConnection(W, chambre);
+		couloir->addConnection(O, chambre);
 
 		chambre->addConnection(E, couloir);
 
 		cuisine->addConnection(S, couloir);
 
         // Definition des objets du jeu
-        shared_ptr<Objet> piano = make_shared<Objet>("Piano", "C'est un vieux piano Yamaha des années 90s.");     // CANNOT INSTANTIATE ABSTRACT CLASS !!!
-        shared_ptr<ObjetEclairer> interrupteurSalon = make_shared<ObjetEclairer>("Interrupteur", "Il semble pouvoir contrôler l'éclairage dans une salle connexe.", salon);
-        shared_ptr<ObjetDeverouiller> boutonRouge = make_shared<ObjetDeverouiller>("Bouton rouge", "Il semble pouvoir déverouiller une salle.", couloir, salleR, E, W);
+        shared_ptr<Objet> piano = make_shared<Objet>("Piano", "C'est un vieux piano Yamaha des années 90s.", 
+            vector<string>{"piano"});
+        shared_ptr<ObjetEclairer> interrupteurSalon = make_shared<ObjetEclairer>("Interrupteur", "Il semble pouvoir contrôler l'éclairage dans une salle connexe.", 
+            vector<string>{"interrupteur"}, salon);
+        shared_ptr<ObjetDeverouiller> boutonRouge = make_shared<ObjetDeverouiller>("Bouton rouge", "Il semble pouvoir déverouiller une salle.", 
+            vector<string>{"bouton", "rouge"}, couloir, salleR, E, O);
         
         // Ajouter les objets présents dans chaque case
         salon->addObjet(piano);
         couloir->addObjet(interrupteurSalon);
         salon->addObjet(boutonRouge);
-
 
         // Enregistrer les cases dans le vector carte_
         carte_.push_back(entree);
@@ -100,12 +103,14 @@ private:
 
 
 /*
-Classe pour l'état du jeu (données actuelles et méthodes de mise à jour)
+Classe pour l'état du jeu (données actuelles et méthodes de mise à jour des données)
     * Contient la position (case) actuelle.
     * Contient la carte du jeu.
-    * Dans son constructeur, initialise le jeu et la position par défaut. 
-    * Méthode pour mettre à jour la position actuelle, après déplacement vers une direction donnée (move)
-    * Méthode pour retourner la position actuelle (getCurrentPosition)
+    * Dans son constructeur, initialise le carte du jeu et la position par défaut. 
+    * Méthode getCurrentPosition() pour retourner la position actuelle 
+    * Méthode move() pour mettre à jour la position actuelle, après déplacement vers une direction donnée 
+    * Méthode look() pour afficher les informations sur une case ou un objet 
+    * Méthode use() pour utiliser un objet 
 */
 class EtatDuJeu {
 public:
@@ -168,7 +173,10 @@ private:
 /*
 Classe pour la logique et l'exécution du jeu
    * Contient l'état du jeu 
-   * Méthode pour exécuter le jeu (run)
+   * Contient un unordered_map associant les commandes aux actions (fonctions à exécuter)
+   * Méthode initJeu() pour initier le jeu (définir la map commande-action) 
+   * Méthode splitUserInputStr() pour traiter l'entrée de l'utilisateur (séparation en commande-argument)
+   * Méthode run() pour exécuter le jeu 
         → Affichage sur la console de l'état du jeu
         → Interaction avec l'utilisateur
         → Mise à jour de l'état du jeu en fonction de l'action de l'utilisateur
@@ -188,12 +196,11 @@ public:
         commandActionMap_["N"] = [this](string arg) {etatJeu_.move(N); };
         commandActionMap_["S"] = [this](string arg) {etatJeu_.move(S); };
         commandActionMap_["E"] = [this](string arg) {etatJeu_.move(E); };
-        commandActionMap_["W"] = [this](string arg) {etatJeu_.move(W); };
+        commandActionMap_["O"] = [this](string arg) {etatJeu_.move(O); };
 
         commandActionMap_["exit"] = [this](string arg) { stop_ = true;
         cout << "Jeu terminé!" << endl; };
     }
-
 
     pair<string, string> splitUserInputStr(string userInput) {
         string command;
@@ -208,7 +215,6 @@ public:
         }
         return make_pair(command, argument);
     }
-
 
     void run() {
         cout << "> > > > JEU INF1015 < < < <" << endl << endl;

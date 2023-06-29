@@ -39,7 +39,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Classes.hpp">
+    <ClInclude Include="ClassesJeu.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Objet.hpp">

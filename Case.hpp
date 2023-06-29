@@ -8,23 +8,28 @@
 #include <algorithm>
 
 #include "Objet.hpp"
-// Besoin d'include les autres ObjetDeverouiller et ObjetEclairer ??
 
 using namespace std;
 
 
-enum direction { N = 'N', S = 'S', E = 'E', W = 'W' };
+enum direction { N = 'N', S = 'S', E = 'E', O = 'O' };
 
 
 /*
 Classe pour contenir une case du jeu
     * Contient un nom, une description
     * Contient un map pour les connections possibles entre cette case et les autres cases
-    * Méthode pour afficher les données d'une case (afficher)
-    * Méthode pour ajouter une nouvelle connection à la case (addConnection)
-    * Méthode pour vérifier si une direction donnée fait partie des connections possibles (isValidMove)
-    * Méthode pour retourner la position (case) correspondant à une direction donnée (getNewPosition)
-    * Méthode pour retourner le nom (getNow)
+    * Contient un vector d'objets de la case
+    * Contient un bool pour l'état d'éclairage de la case
+    * Méthode afficher() pour afficher les données d'une case 
+    * Méthode getNom() pour retourner le nom 
+    * Méthode addConnection() pour ajouter une nouvelle connection à la case 
+    * Méthode isValidMove() pour vérifier si une direction donnée fait partie des connections possibles 
+    * Méthode getNewPosition() pour retourner la position (case) correspondant à une direction donnée 
+    * Méthode addObjet() pour ajouter un objet à la case
+    * Méthode containsKeyword() pour vérifier si un string objet reçu en paramètre contient un mot-clé des objets de la case
+    * Méthode getObjet() pour retourner un objet selon un string objet reçu en paramètre
+    * Méthode setEclairage() pour changer l'état d'éclairage de la case
 */
 class Case {
 public:
@@ -45,28 +50,9 @@ public:
             cout << "Il fait très sombre et vous ne discernez aucun détail. Vous voyez seulement l'accès menant aux pièces connexes." << endl;
         }
         for (auto& c : connections_) {
-            cout << c.second.lock()->getNom() << " est vers " << char(c.first) << endl; // le nord; l'est
+            cout << c.second.lock()->getNom() << " est vers " << char(c.first) << endl; 
         }
-        //return os;
     }
-
-    //direction stringToDirection(string directionStr) {  // ???
-    //    if (directionStr == "N") {
-    //        return N;
-    //    }
-    //    else if (directionStr == "S") {
-    //        return S;
-    //    }
-    //    else if (directionStr == "E") {
-    //        return E;
-    //    }
-    //    else if (directionStr == "W") {
-    //        return W;
-    //    }
-    //    else {
-    //        // throw exception OR return default direction!!
-    //    }
-    //}
 
     string getNom() {
         return nom_;
@@ -76,13 +62,11 @@ public:
         connections_[d] = connection;
     }
 
-    bool isValidMove(direction d) {    // string directionStr
-        //direction d = stringToDirection(directionStr);
+    bool isValidMove(direction d) {   
         return (connections_.find(d) != connections_.end());
     }
 
-    shared_ptr<Case> getNewPosition(direction d ) {     // string directionStr
-        //direction d = stringToDirection(directionStr);
+    shared_ptr<Case> getNewPosition(direction d ) {    
         return connections_[d].lock();
     }
 
@@ -109,7 +93,6 @@ public:
         auto it = find_if(objets_.begin(), objets_.end(),
             [&](shared_ptr<Objet> obj) { return containsKeyword(objetNom, obj); });
 
-        //auto it = find_if(objets_.begin(), objets_.end(), [&](shared_ptr<Objet> obj) { return obj->getNom() == objetNom; });        
         return (it != objets_.end()) ? *it : nullptr;
     }
  

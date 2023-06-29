@@ -14,7 +14,8 @@ using namespace std;
 
 class ObjetEclairer : public Objet {
 public:
-    ObjetEclairer(string nom, string description, shared_ptr<Case> c) : Objet(nom, description), caseCible_(c) { }
+    ObjetEclairer(string nom, string description, vector<string> keywords, shared_ptr<Case> c) 
+        : Objet(nom, description, keywords), caseCible_(c) { }
 
     void effectuerAction() override {
         caseCible_.lock()->setEclairage();
