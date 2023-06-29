@@ -1,5 +1,5 @@
 ﻿/*
-Livrable 1. 
+Projet Final
 	Ikram Arroud 2210444
 	Shu Ai Song 2025639
 	Abdelnour Sikouky 21582444
@@ -61,14 +61,6 @@ using namespace gsl;
 int main(int argc, char* argv[])
 {
 	initialiserBibliothequeCours(argc, argv);
-
-	// Exemple d'affichage: (si la bibliothèque est bien chargée, l'accent devrait sortir correctement et la couleur aussi)
-	cout << "Bonjour à tous!\n"
-		<< "\033[35mEn couleur!\033[0m\n";
-	// Exemple d'affichage de débogage, devrait être dans la fenêtre "Sortie" de Visual Studio:
-	cdbg << "Bonjour débogueur!\n";
-
-
 	// Creation d'une instance du jeu
 	GamePlay game;
 	// Partir le jeu
